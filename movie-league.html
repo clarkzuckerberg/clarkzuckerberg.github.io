@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Fantasy Movie League 2023</title>
+	<meta property="og:image" content="https://jordanclark.me/movie-league/summer-2023.jpg" />
+	<script src="https://apis.google.com/js/api.js"></script>
+	<style>
+		body {
+			background-color: #2b2b2b; /* Set the dark background color for the entire page */
+			color: #fff; /* Set the default text color to white */
+		}
+		
+		#table-container {
+			margin: 0 auto; /* Center the table horizontally */
+			max-width: 900px; /* Limit the table width */
+		}
+		
+		#table-container table {
+			border-collapse: collapse;
+			width: 100%; /* Make the table occupy the entire container */
+		}
+		
+		#table-container td {
+			padding: 8px;
+			border: 0;
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			text-align: center; /* Center the text in the cells */
+		}
+		
+		h1 {
+			text-align: center; /* Center the heading horizontally */
+			font-family: sans-serif; /* Set the font family to sans-serif */
+		}
+		
+		/* Style for column B */
+		#table-container td:nth-child(1) {
+			width: 20%; /* Adjust the width of column B */
+			text-align: left; /* Align the text in column B to the left */
+		}
+		
+		/* Style for columns C to I */
+		#table-container td:nth-child(n+2):nth-child(-n+5),
+		#table-container td:nth-child(6),
+		#table-container td:nth-child(n+7):nth-child(-n+9) {
+			width: 11%; /* Adjust the width of columns C to I */
+		}
+		
+		/* Remove borders from specific rows */
+		#table-container tr:nth-child(10) td,
+		#table-container tr:nth-child(20) td {
+			border: none;
+		}
+		
+		table tr:nth-child(n+2):nth-child(-n+7) td:nth-child(1),
+		table tr:nth-child(n+2):nth-child(-n+7) td:nth-child(2) {
+			color: black; /* Set the text color to black */
+			background-color: #59aaff;
+		}
+		
+		table tr:nth-child(n+12):nth-child(-n+17) td:nth-child(1),
+		table tr:nth-child(n+12):nth-child(-n+17) td:nth-child(2) {
+			color: black; /* Set the text color to black */
+			background-color: #bd91ff;
+		}
+		
+		table tr:nth-child(n+22):nth-child(-n+27) td:nth-child(1),
+		table tr:nth-child(n+22):nth-child(-n+27) td:nth-child(2) {
+			color: black; /* Set the text color to black */
+			background-color: #eb9850;
+		}
+		
+		table tr:nth-child(1) td:first-child,
+		table tr:nth-child(9) td:first-child,
+		table tr:nth-child(9) td:nth-child(2) {
+			background-color: #023a75;
+			font-size: 115%;
+			font-weight: bold;
+		}
+		
+		table tr:nth-child(11) td:first-child,
+		table tr:nth-child(19) td:first-child,
+		table tr:nth-child(19) td:nth-child(2) {
+			background-color: #32027a;
+			font-size: 115%;
+			font-weight: bold;
+		}
+		
+		table tr:nth-child(21) td:first-child,
+		table tr:nth-child(29) td:first-child,
+		table tr:nth-child(29) td:nth-child(2) {
+			background-color: #873400;
+			font-size: 115%;
+			font-weight: bold;
+		}
+		
+		table tr:nth-child(8) td:first-child,
+		table tr:nth-child(8) td:nth-child(2),
+		table tr:nth-child(18) td:first-child,
+		table tr:nth-child(18) td:nth-child(2),
+		table tr:nth-child(28) td:first-child,
+		table tr:nth-child(28) td:nth-child(2) {
+			color: white; /* Set the text color to black */
+			background-color: #6b0101; /* Set the background color for the specified cells */
+		}
+		
+		#loading-message {
+			text-align: center;
+			margin-top: 20px;
+			font-size: 16px;
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<h1>Fantasy Movie League 2023</h1>
+	<div id="loading-message">Loading...</div> <!-- Added loading message -->
+	<div id="table-container"></div>
+	<script>
+		gapi.load('client', initClient);
+
+		function initClient() {
+			gapi.client.init({
+				apiKey: 'AIzaSyBtyV-KIOydSLm-uUubKwcqvYRoI9xbpYU',
+				discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+			}).then(() => {
+				// API client is initialized and ready to use
+				getDataFromSheet();
+			});
+		}
+
+		function getDataFromSheet() {
+			gapi.client.sheets.spreadsheets.values.get({
+				spreadsheetId: '1AXIfovX1koqQNvW9KRiXDPN69SiY-mL-CLWf7Bn3md0',
+				range: 'Sheet1!A1:I1000', // Modify the range to include columns A through I
+			}).then((response) => {
+				const data = response.result.values; // Extract the column data from the response
+				displayDataOnPage(data); // Call a function to display the data on your website
+			});
+		}
+
+		function displayDataOnPage(data) {
+			const container = document.getElementById('table-container');
+			let html = '<table>'; // Start the table element
+			data.forEach((row, rowIndex) => {
+				html += '<tr>'; // Start a new row
+				row.forEach((cell, cellIndex) => {
+					html += '<td>' + cell + '</td>'; // Display each cell in a table cell element
+				});
+				html += '</tr>'; // End the row
+			});
+			html += '</table>'; // End the table element
+			container.innerHTML = html;
+			document.getElementById('loading-message').style.display = 'none'; // Hide the loading message
+		}
+	</script>
+</body>
+</html>
